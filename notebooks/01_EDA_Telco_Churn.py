@@ -10,7 +10,7 @@ import seaborn as sns
 
 # Chargement du dataset (chemin relatif)
 try:
-    df = pd.read_csv("../data/WA_Fn-UseC_-Telco-Customer-Churn.csv")
+    df = pd.read_csv("data/WA_Fn-UseC_-Telco-Customer-Churn.csv")
     print("Dataset chargé avec succès !")
 except FileNotFoundError:
     print("Erreur : Le fichier CSV n'a pas été trouvé. Vérifiez le chemin d'accès relatif.")
