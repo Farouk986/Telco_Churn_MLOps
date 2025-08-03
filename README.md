@@ -2,5 +2,5 @@
 
 End-to-end ML pipeline for Telco Churn prediction with CML
 
-\*\*Workflow Status:\*\* Initiating GitHub Actions workflow test.
+Activating workflow permissions.
 
