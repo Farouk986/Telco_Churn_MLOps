@@ -22,3 +22,6 @@ jobs:
       - name: Run EDA script
         run: |
           python notebooks/01_EDA_Telco_Churn.py
+      - name: Run Preprocessing script
+        run: |
+          python notebooks/02_Preprocessing_Telco_Churn.py
