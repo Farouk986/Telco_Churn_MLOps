@@ -3,6 +3,5 @@ scikit-learn==1.4.2
 matplotlib==3.8.4
 seaborn==0.12.2
 numpy==1.25.2
-ydata-profiling==3.6.2
 dvc
 cml
