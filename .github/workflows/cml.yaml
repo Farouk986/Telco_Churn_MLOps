@@ -4,26 +4,59 @@ on: [push]
 jobs:
   run:
     runs-on: [ubuntu-latest]
-    # La ligne 'container: docker://dvcorg/cml-py3:latest' ne doit PAS être pr\u00E9sente ici.
+    # Nous n'utiliserons pas de conteneur Docker pour le moment pour simplifier l'installation de CML
+    # container: docker://dvcorg/cml-py3:latest 
 
     steps:
-      - uses: actions/checkout@v4 # Utilisez la version 4
+      - uses: actions/checkout@v4 # Utilise la version 4 des actions de checkout
 
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.11' # Utilisez Python 3.11
+          python-version: '3.11' # S'assure d'utiliser Python 3.11
 
       - name: Install dependencies
         run: |
           pip install --upgrade pip
           pip install setuptools
-          pip install -r requirements.txt # N'installe PAS cml et dvc pour ce test !
+          pip install -r requirements.txt # Cette ligne va installer TOUTES les d\u00E9pendances, y compris dvc et cml
 
       - name: Run EDA script
         run: |
           python notebooks/01_EDA_Telco_Churn.py
 
-      # Les \u00E9tapes pour le rapport CML (echo "## Rapports...") sont retir\u00E9es
-      # pour ce test car nous n'avons pas CML install\u00E9.
-      # Nous les r\u00E9introduirons si / quand CML fonctionne.
+      - name: Publish EDA Report and Metrics
+        env:
+          # CML_GITHUB_TOKEN est une variable d'environnement qui contient le token GitHub.
+          # CML le r\u00E9cup\u00E8re automatiquement depuis GITHUB_TOKEN fourni par GitHub Actions.
+          # Pas besoin de le d\u00E9finir manuellement ici, c'est pour l'information.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "## Telco Churn EDA Report" >> report.md
+          echo "### Overview" >> report.md
+          echo "This report provides an exploratory data analysis of the Telco Customer Churn dataset." >> report.md
+          echo "The goal is to understand data structure, identify important features, and assess data quality." >> report.md
+          echo "" >> report.md
+
+          # Ajouter le rapport ydata-profiling
+          echo "### YData Profiling Report" >> report.md
+          echo "The full interactive report can be viewed [here](https://htmlpreview.github.io/?https://raw.githubusercontent.com/${{ github.repository }}/main/documentation/Profiling_Report_Telco_Churn.html)" >> report.md
+          echo "" >> report.md
+
+          # Ajouter la distribution de Churn (exemple de m\u00E9trique simple)
+          echo "### Churn Distribution" >> report.md
+          echo "```" >> report.md
+          python -c "import pandas as pd; df = pd.read_csv('data/WA_Fn-UseC_-Telco-Customer-Churn.csv'); df['Churn'] = df['Churn'].apply(lambda x: 1 if x == 'Yes' else 0); print(df['Churn'].value_counts(normalize=True) * 100)" >> report.md
+          echo "```" >> report.md
+          echo "" >> report.md
+
+          # Utiliser cml publish pour ins\u00E9rer le contenu de report.md dans le README.md
+          cml publish report.md --md >> $GITHUB_STEP_SUMMARY # Pour les logs de l'action
+
+          # CML peut aussi modifier directement le README.md, mais pour \u00E9viter les commits automatiques ici,
+          # nous allons utiliser une approche manuelle pour l'instant si n\u00E9cessaire.
+          # Pour CML, l'id\u00E9al est de le laisser cr\u00E9er des commentaires dans les PRs ou de g\u00E9n\u00E9rer des markdown.
+          # Ici, on l'exporte dans report.md et on peut le copier-coller manuellement dans README.md si la publication directe dans README.md est complexe pour le premier test.
+          # Une meilleure approche pour l'int\u00E9gration continue CML serait :
+          # cml comment create report.md --pr
+          # Mais pour l'instant, on va juste s'assurer que le rapport est g\u00E9n\u00E9r\u00E9 et accessible.
