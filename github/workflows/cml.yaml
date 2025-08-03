@@ -1,0 +1,29 @@
+name: telco-churn-ci-ml
+on: [push]
+
+jobs:
+  run:
+    runs-on: [ubuntu-latest]
+    # La ligne 'container: docker://dvcorg/cml-py3:latest' ne doit PAS être pr\u00E9sente ici.
+
+    steps:
+      - uses: actions/checkout@v4 # Utilisez la version 4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11' # Utilisez Python 3.11
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install setuptools
+          pip install -r requirements.txt # N'installe PAS cml et dvc pour ce test !
+
+      - name: Run EDA script
+        run: |
+          python notebooks/01_EDA_Telco_Churn.py
+
+      # Les \u00E9tapes pour le rapport CML (echo "## Rapports...") sont retir\u00E9es
+      # pour ce test car nous n'avons pas CML install\u00E9.
+      # Nous les r\u00E9introduirons si / quand CML fonctionne.
