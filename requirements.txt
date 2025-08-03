@@ -1,8 +1,8 @@
 pandas==2.2.1
 scikit-learn==1.4.2
 matplotlib==3.8.4
-seaborn==0.13.2
-numpy==1.25.2      # <--- CHANGEMENT ICI !
+seaborn==0.12.2
+numpy==1.25.2
 ydata-profiling==4.6.4
 dvc==3.61.0
 cml==0.0.1
