@@ -3,8 +3,7 @@ on: [push]
 
 jobs:
   run:
-    runs-on: [ubuntu-latest]
-    # container: docker://dvcorg/cml-py3:latest 
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
@@ -12,30 +11,14 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.10' 
+          python-version: '3.10'
 
       - name: Install dependencies
         run: |
           pip install --upgrade pip
           pip install setuptools
-          pip install -r requirements.txt 
+          pip install -r requirements.txt
 
       - name: Run EDA script
         run: |
           python notebooks/01_EDA_Telco_Churn.py
-
-      - name: Publish EDA Report and Metrics # <--- COMMENTEZ OU SUPPRIMEZ TOUT LE BLOC SUIVANT
-        # env:
-        #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        # run: |
-        #   echo "## Telco Churn EDA Report" >> report.md
-        #   echo "### Overview" >> report.md
-        #   echo "This report provides an exploratory data analysis of the Telco Customer Churn dataset." >> report.md
-        #   echo "The goal is to understand data structure, identify important features, and assess data quality." >> report.md
-        #   echo "" >> report.md
-        #   echo "### Churn Distribution" >> report.md
-        #   echo "```" >> report.md
-        #   python -c "import pandas as pd; df = pd.read_csv('data/WA_Fn-UseC_-Telco-Customer-Churn.csv'); df['Churn'] = df['Churn'].apply(lambda x: 1 if x == 'Yes' else 0); print(df['Churn'].value_counts(normalize=True) * 100)" >> report.md
-        #   echo "```" >> report.md
-        #   echo "" >> report.md
-        #   cml publish report.md --md >> $GITHUB_STEP_SUMMARY
