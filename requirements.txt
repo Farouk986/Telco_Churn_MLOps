@@ -1,8 +1,8 @@
-pandas
+pandas==2.2.1
 scikit-learn
 matplotlib
 seaborn
 numpy
-ydata-profiling
+ydata-profiling==4.6.4
 dvc
 cml
