@@ -25,3 +25,6 @@ jobs:
       - name: Run Preprocessing script
         run: |
           python notebooks/02_Preprocessing_Telco_Churn.py
+      - name: Run Training and Evaluation script
+        run: |
+          python notebooks/03_Training_Evaluation_Telco_Churn.py
