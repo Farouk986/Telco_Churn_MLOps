@@ -39,7 +39,7 @@ import os # Pour créer le dossier models
 
 # Cellule 2: Chargement du dataset prétraité
 # Le fichier CSV prétraité est situé dans le dossier 'data'
-df_preprocessed = pd.read_csv('../data/telco_churn_preprocessed.csv')
+df_preprocessed = pd.read_csv('data/telco_churn_preprocessed.csv')
 
 print("--- Aperçu du dataset prétraité ---")
 print(df_preprocessed.head())
